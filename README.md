@@ -55,7 +55,7 @@ jobs:
       with:
         name: library-artifacts
         path: ./artifacts/
-
+```
 
 3. **Configure the CI pipeline to run the build script**:
    - Push the `build-dotnet-library.yml` file to your repository. GitHub Actions should automatically detect the new workflow and start running it whenever there's a push or pull request to the `main` branch.
@@ -73,7 +73,7 @@ jobs:
         dotnet nuget add source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --name github --username ${{ github.repository_owner }} --password ${{ secrets.GH_PACKAGES_TOKEN }} --store-password-in-clear-text
         dotnet nuget push ./artifacts/*.nupkg --source github
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
+```
 
 6. **Update the .NET library project's configuration**:
    - In your .NET library project's `.csproj` file, add the following `RepositoryUrl` and `PackagePublishUrl` properties:
@@ -83,7 +83,7 @@ jobs:
   <RepositoryUrl>https://github.com/yourusername/yourrepository</RepositoryUrl>
   <PackagePublishUrl>https://nuget.pkg.github.com/yourusername</PackagePublishUrl>
 </PropertyGroup>
-
+```
 
 Replace `yourusername` and `yourrepository` with your GitHub username and repository name.
 
@@ -97,7 +97,7 @@ Replace `yourusername` and `yourrepository` with your GitHub username and reposi
     <add key="github" value="https://nuget.pkg.github.com/yourusername/index.json" />
   </packageSources>
 </configuration>
-
+```
 
 Replace `yourusername` with your GitHub username or organization name.
 
