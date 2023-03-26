@@ -1,0 +1,38 @@
+VAR
+    logger : TcLogger;
+    maxLogFileSize : UDINT := 1024; // in bytes
+    maxLogFileCount : UINT := 10;
+    maxLogAgeDays : UINT := 30;
+    logFilePath : STRING := 'C:\Sensata\Logs\BeckhoffLogs\MyLog.txt';
+END_VAR
+
+// Create a new logger instance
+logger := TcLogger.CreateInstance('MyLogger');
+
+// Set the log file path
+logger.LogFilePath := logFilePath;
+
+// Set the log level
+logger.LogLevel := TcLogLevel.Debug;
+
+// Enable log file rotation and set the maximum log file size and maximum number of log files to keep
+logger.EnableLogFileRotation := TRUE;
+logger.MaxLogFileSize := maxLogFileSize;
+logger.MaxLogFileCount := maxLogFileCount;
+
+// Set the maximum log file age in days
+logger.MaxLogAgeDays := maxLogAgeDays;
+
+// Initialize the logger
+logger.Initialize();
+
+// Write a log message
+logger.LogDebug('Debug message');
+
+// ...
+
+// When the program ends or the logger is no longer needed, deinitialize the logger
+logger.Deinitialize();
+
+// Delete log files that are older than the maximum log file age
+TcFile.DeleteFiles(logFilePath, '*.log', maxLogAgeDays * 24 * 60 * 60);
